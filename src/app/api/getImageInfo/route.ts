@@ -1,6 +1,12 @@
+import { getCurrentUser } from '@/lib/user'
 import { NextResponse } from 'next/server'
 
 export async function POST(req: any, res: any) {
+  // 校验是否登录
+  const user = await getCurrentUser()
+  if (!user) {
+    return NextResponse.json(new Error('Unauthorized'), { status: 401 })
+  }
   // 解析formData
   const formData = await req.formData()
   const image = formData.get('image')
